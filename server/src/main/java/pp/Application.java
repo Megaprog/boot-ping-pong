@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import pp.model.User;
 
@@ -19,38 +20,39 @@ import java.net.MalformedURLException;
 
 @Configuration
 @EnableAutoConfiguration
+@ComponentScan
 public class Application {
 
     public static void main(String[] args) throws MalformedURLException, UnsupportedEncodingException {
         SpringApplication.run(Application.class, args);
     }
 
-    @Bean(destroyMethod = "close")
+    @Bean
     @Autowired
     public Cassandra cassandra(@Value("${cassandra.embedded:true}") boolean embedded,
                                @Value("#{'${cassandra.hosts:localhost}'.split(',')}") String[] hosts,
-                               @Value("${cassandra.keyspace:ping_pong}")String keyspace) throws IOException {
+                               @Value("${cassandra.keyspace:ping_pong}")String keyspace,
+                               @Value("${cassandra.truncate:false}") boolean truncate) throws IOException {
 
         if (embedded) {
             new EmbeddedCassandraService().start();
         }
 
         final EntityPool entityPool = new EntityPool();
-        final Cassandra cassandra = new Cassandra(Cluster.builder().addContactPoints(hosts).build().connect(), entityPool) {
-            public void close() {
-                getSession().getCluster().close();
-            }
-        };
+        final Cassandra cassandra = new Cassandra(Cluster.builder().addContactPoints(hosts).build().connect(), entityPool);
 
         cassandra.execute("CREATE KEYSPACE IF NOT EXISTS " + keyspace + " WITH replication = {'class':'SimpleStrategy', 'replication_factor':1};");
         cassandra.execute("USE " + keyspace);
 
         final EntityInfo<User> entityInfo = entityPool.entityInfo(User.class);
         cassandra.execute("CREATE TABLE IF NOT EXISTS " + entityInfo.table() + " (\n" +
-                "  id uuid PRIMARY KEY,\n" +
+                "  id text PRIMARY KEY,\n" +
                 "  pings counter,\n" +
                 ")");
-        cassandra.execute("truncate " + entityInfo.table());
+
+        if (truncate) {
+            cassandra.execute("truncate " + entityInfo.table());
+        }
 
         return cassandra;
     }

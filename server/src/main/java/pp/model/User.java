@@ -2,30 +2,28 @@ package pp.model;
 
 import org.jmmo.sc.annotation.Key;
 
-import java.util.UUID;
-
 public class User {
     @Key
-    private UUID id;
+    private String id;
     private long pings;
 
     public User() {
     }
 
-    public User(UUID id) {
+    public User(String id) {
         this.id = id;
     }
 
-    public User(UUID id, long pings) {
+    public User(String id, long pings) {
         this.id = id;
         this.pings = pings;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

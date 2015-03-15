@@ -1,21 +1,21 @@
 package pp.protocol;
 
 public class JsonRequest {
-    private String type;
+    private String command;
 
     public JsonRequest() {
     }
 
-    public JsonRequest(String type) {
-        this.type = type;
+    public JsonRequest(String command) {
+        this.command = command;
     }
 
-    public String getType() {
-        return type;
+    public String getCommand() {
+        return command;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     @Override
@@ -25,20 +25,20 @@ public class JsonRequest {
 
         JsonRequest that = (JsonRequest) o;
 
-        if (!type.equals(that.type)) return false;
+        if (!command.equals(that.command)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return type.hashCode();
+        return command.hashCode();
     }
 
     @Override
     public String toString() {
         return "JsonRequest{" +
-                "type='" + type + '\'' +
+                "command='" + command + '\'' +
                 '}';
     }
 }

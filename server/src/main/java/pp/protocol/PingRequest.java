@@ -1,12 +1,12 @@
 package pp.protocol;
 
 public class PingRequest extends JsonRequest {
-    public static final String TYPE = "PING";
+    public static final String COMMAND = "PING";
 
     private String userId;
 
     public PingRequest() {
-        super(TYPE);
+        super(COMMAND);
     }
 
     public PingRequest(String userId) {
@@ -45,7 +45,7 @@ public class PingRequest extends JsonRequest {
     @Override
     public String toString() {
         return "PingRequest{" +
-                "type='" + getType() + '\'' +
+                "type='" + getCommand() + '\'' +
                 ", userId='" + userId + '\'' +
                 '}';
     }
