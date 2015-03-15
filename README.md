@@ -43,8 +43,11 @@ Using Spring Boot, Spring MVC, Cassandra (embedded).
 Настройки клиента в файле client/src/main/resources/application.properties
 
 url=http://localhost/handler - куда делать запросы
+
 attempts=10 - сколько запросов делает каждый поток
+
 threads=1 - сколько запускать потоков
+
 users=1 - сколько сгенерировать индетификаторов пользователей
 
 ## How to run
