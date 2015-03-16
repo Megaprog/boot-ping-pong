@@ -2,7 +2,8 @@
 
 Server and client for high load ping pong interactions.
 
-Using Spring Boot, Spring MVC, Cassandra (embedded).
+Using Spring Boot, Spring MVC, Cassandra (embedded), streaming-cassandra library for binding (see
+    https://github.com/Megaprog/streaming-cassandra).
 
 Сервер, обрабатывает  протокольную команду “PING <userId>”, на которую отвечет “PONG N”, где N количество раз, сколько этот клиент запрашивал PING.
 Сервер должен отвечет на POST запросы по адресу http://localhost/handler, тип команды и аргументы пакуются в JSON внутри тела запроса.
